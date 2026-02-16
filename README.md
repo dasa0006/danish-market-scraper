@@ -85,7 +85,7 @@ It is built for **speed**, **resilience**, and **scalability**, using a modern a
 
 ### **Git Hooks & CommitLint**
 
-- husky-rs
+- cargo-husky
 - cargo‑commitlint
 
 ---
