@@ -7,4 +7,5 @@ edition = "2024"
 
 
 [dev-dependencies]
-husky-rs = "0.3.2"
+cargo-husky = "1.5.0"
+
