@@ -1,13 +1,6 @@
-#![allow(unused)]
-
-use crate::prelude::*;
-
-mod error;
-mod prelude;
-mod utils;
+pub type Result<T> = core::result::Result<T, Error>;
+pub type Error = Box<dyn std::error::Error>; // Early Dev
 
 fn main() -> Result<()> {
-    println!("Hello, world!");
-
     Ok(())
 }
