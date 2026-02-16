@@ -57,7 +57,6 @@ It is built for **speed**, **resilience**, and **scalability**, using a modern a
 - Governor (rate limiting)
 - Tower (retry policies)
 - chrono
-- tokio-cron-scheduler
 
 ### **Database**
 
