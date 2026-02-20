@@ -12,7 +12,7 @@ tower = { version = "0.5.3", features = ["retry", "timeout"] }
 tokio-cron-scheduler = "0.15.1"
 serde = "1.0.228"
 serde_json = "1.0.149"
-chrono = "0.4.43"
+chrono = { version= "0.4.43", features = ["serde"]}
 tracing = "0.1"
 tracing-subscriber = "0.3.0"
 dotenvy = "0.15.7"
