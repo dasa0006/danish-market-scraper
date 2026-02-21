@@ -6,7 +6,7 @@ use crate::models::{
 };
 
 /// An address entry.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Property {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -110,7 +110,7 @@ pub struct Building {
 }
 
 /// A registration record.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Registration {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -140,5 +140,84 @@ pub struct DaysOnMarket {
 impl Property {
     pub fn latest_deal(&self) -> Option<&Registration> {
         self.registrations.as_ref()?.iter().max_by_key(|r| r.date)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use chrono::{DateTime, Utc};
+
+    fn dt(s: &str) -> Option<chrono::NaiveDate> {
+        Some(s.parse::<chrono::NaiveDate>().unwrap())
+    }
+
+    #[test]
+    fn returns_none_when_no_registrations() {
+        let addr = Property {
+            registrations: None,
+            ..Default::default()
+        };
+
+        assert!(addr.latest_deal().is_none());
+    }
+
+    #[test]
+    fn returns_none_when_empty_vec() {
+        let addr = Property {
+            registrations: Some(vec![]),
+            ..Default::default()
+        };
+        assert!(addr.latest_deal().is_none());
+    }
+
+    #[test]
+    fn returns_latest_registration() {
+        let regs = vec![
+            Registration {
+                date: dt("2024-01-01"),
+                ..Default::default()
+            },
+            Registration {
+                date: dt("2024-01-03"),
+                ..Default::default()
+            },
+            Registration {
+                date: dt("2024-01-02"),
+                ..Default::default()
+            },
+        ];
+
+        let addr = Property {
+            registrations: Some(regs.clone()),
+            ..Default::default()
+        };
+
+        let latest = addr.latest_deal().unwrap();
+
+        assert_eq!(latest.date, dt("2024-01-03"));
+    }
+
+    #[test]
+    fn returns_reference_not_clone_if_using_ref_version() {
+        let regs = vec![
+            Registration {
+                date: dt("2024-01-01"),
+                ..Default::default()
+            },
+            Registration {
+                date: dt("2024-01-02"),
+                ..Default::default()
+            },
+        ];
+
+        let addr = Property {
+            registrations: Some(regs),
+            ..Default::default()
+        };
+
+        // Only relevant if your method returns &Registration
+        let latest = addr.latest_deal().unwrap();
+        assert_eq!(latest.date, dt("2024-01-02"));
     }
 }
