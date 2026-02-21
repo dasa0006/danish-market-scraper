@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::models::{Address, Links};
+use crate::models::{Property, Links};
 
 /// Top-level API response.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -9,7 +9,7 @@ pub struct ApiResponse {
     #[serde(rename = "_links", skip_serializing_if = "Option::is_none")]
     pub _links: Option<Links>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub addresses: Option<Vec<Address>>,
+    pub addresses: Option<Vec<Property>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub total_hits: Option<i64>,
 }
@@ -195,7 +195,7 @@ mod tests {
             "cityName": "Springfield"
         }
         "#;
-        let addr: Address = serde_json::from_str(json).expect("should parse");
+        let addr: Property = serde_json::from_str(json).expect("should parse");
         assert_eq!(addr.address_id, Some("123".to_string()));
         assert_eq!(addr.city_name, Some("Springfield".to_string()));
         assert!(addr.buildings.is_none()); // not present
@@ -210,7 +210,7 @@ mod tests {
             "cityName": "Springfield"
         }
         "#;
-        let addr: Address = serde_json::from_str(json).unwrap();
+        let addr: Property = serde_json::from_str(json).unwrap();
         assert_eq!(addr.address_id, None); // null -> None
         assert_eq!(addr.city_name, Some("Springfield".to_string()));
     }
@@ -223,7 +223,7 @@ mod tests {
             "buildings": []
         }
         "#;
-        let addr: Address = serde_json::from_str(json).unwrap();
+        let addr: Property = serde_json::from_str(json).unwrap();
         assert_eq!(addr.bfe_numbers, Some(vec![]));
         assert_eq!(addr.buildings, Some(vec![]));
     }
@@ -236,7 +236,7 @@ mod tests {
             "unknownField": "should be ignored"
         }
         "#;
-        let addr: Address = serde_json::from_str(json).unwrap();
+        let addr: Property = serde_json::from_str(json).unwrap();
         assert_eq!(addr.address_id, Some("123".to_string()));
         // No error, extra field ignored.
     }
