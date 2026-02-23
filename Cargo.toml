@@ -19,6 +19,7 @@ dotenvy = "0.15.7"
 config = "0.15.19"
 thiserror = "2.0.18"
 derive_more = {version="2.1.1", features = ["from"]}
+rand = "0.10.0"
 
 [dependencies.sqlx] 
 version = "0.8.6" 
@@ -27,3 +28,4 @@ features = ["runtime-tokio", "sqlite", "postgres", "macros"]
 [dev-dependencies]
 cargo-husky = "1.5.0"
 anyhow = "1.0.101"
+httpmock = "0.8.3"
