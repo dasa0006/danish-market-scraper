@@ -1,14 +1,20 @@
 use reqwest::Client;
 use std::time::Duration;
 
+use crate::scraper::error::HttpClientError;
+
 pub struct HttpClient {
     client: Client,
 }
 
 impl HttpClient {
-    pub fn new(timeout: Duration) -> Result<Self, reqwest::Error> {
-        let client = Client::builder().timeout(timeout).build()?;
-
+    /// Creates a new `HttpClient` with the specified timeout.
+    ///
+    /// # Errors
+    /// Returns `HttpClientError::BuildFailed` if the underlying `reqwest::Client`
+    /// cannot be constructed.
+    pub fn new(timeout: Duration) -> Result<Self, HttpClientError> {
+        let client = Client::builder().timeout(timeout).build()?; // now converts via From
         Ok(Self { client })
     }
 
